@@ -10,30 +10,57 @@ async function getPlaylist(){
     
     try {
       
-      let json = await axios.get(
+      let playlistItems = await axios.get(
         'https://www.googleapis.com/youtube/v3/playlistItems', 
         {
           params: { 
               'key': 'AIzaSyD7-ZPCTrB4fYtIkvVXm4zici_IOlpP4N8', 
-              'part': 'id',
+              'part': 'snippet',
               'playlistId': 'PLntvgXM11X6pi7mW0O4ZmfUI1xDSIbmTm',
-              'maxResults': '50'
+              'maxResults': '10'
           }
         }
         );
 
-      let ids_videos_gross = json.data['items'];
+      let ids_videos_gross = playlistItems.data['items'];
       let ids_videos = [];
 
       ids_videos_gross.forEach(video => {
-        ids_videos.push(video.id);
+        ids_videos.push(video.snippet.resourceId.videoId);
       })
 
+      console.log(ids_videos);
+
+      const video_stats = [];
+
+      for (const id of ids_videos) {
+        // video_stats.push(getVideoViews(id));
+
+        const stats = await axios.get(
+          'https://www.googleapis.com/youtube/v3/videos', 
+          {
+            params: { 
+                'key': 'AIzaSyD7-ZPCTrB4fYtIkvVXm4zici_IOlpP4N8', 
+                'part': 'statistics',
+                'id': id
+            }
+          }
+          );
+
+          const items = stats.data.items;
+
+          console.log(items[0]['statistics']);
+          video_stats.push(items[0]['statistics']);
+      }
+
+      console.log(video_stats);
+
+      video_stats.forEach(stats => console.log(stats.viewCount));
+       
+      //https://www.googleapis.com/youtube/v3/videos?part=statistics&id=eW7OPtImIRw&key={API-KEY}
+
       // console.log(ids_videos);
-
-
   
-      return json;
     } catch (error) {
       console.log('deu erro ' + error);
       console.log(error);
