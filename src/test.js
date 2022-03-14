@@ -1,11 +1,9 @@
-const qs = require('qs');
 const axios = require('axios');
 
 const api_youtube = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL_YOUTUBE_API,
 });
 
-module.exports = {api_youtube};
 async function getPlaylist(){
     
     try {
@@ -23,6 +21,7 @@ async function getPlaylist(){
         );
 
       let ids_videos_gross = playlistItems.data['items'];
+
       let ids_videos = [];
 
       ids_videos_gross.forEach(video => {
@@ -49,16 +48,16 @@ async function getPlaylist(){
 
           const items = stats.data.items;
 
-          console.log(items[0]['statistics']);
           video_stats.push(items[0]['statistics']);
       }
 
       console.log(video_stats);
 
       video_stats.forEach(stats => console.log(stats.viewCount));
+
+      return video_stats;
        
       //https://www.googleapis.com/youtube/v3/videos?part=statistics&id=eW7OPtImIRw&key={API-KEY}
-
       // console.log(ids_videos);
   
     } catch (error) {
