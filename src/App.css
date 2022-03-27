@@ -36,3 +36,36 @@
     transform: rotate(360deg);
   }
 }
+
+.field-playlistID {
+  font-size:18px;
+  margin-left:10px;
+  /* background-color: #FFF; */
+  border: 2px solid #392FF5;
+  padding: 10px 20px;
+  border-radius:10px;
+  width: 400px;
+
+}
+
+.btn-playlistID {
+  font-size:18px;
+  margin-left:10px;
+  background-color: #392FF5;
+  border: 2px solid #392FF5;
+  padding: 10px 20px;
+  color: #fff;
+  border-radius:10px;
+  cursor: pointer;
+}
+
+.btn-playlistID:hover {
+  background-color: #544bfd;
+  border: 2px solid #544bfd;
+}
+
+.grafico {
+  margin: 0px auto;
+  width: 300px;
+  height: 300px;
+}

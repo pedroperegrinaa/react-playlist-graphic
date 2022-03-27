@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import api_youtube from './services/playlistitem.js';
 import qs from 'qs';
 import axios from 'axios';
-import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area  } from 'recharts';
+import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, Bar, Line  } from 'recharts';
 
 function App() {
   const [videoStats, setVideoStats] = useState([]);
+  const [playlistID, setPlaylistID] = useState();
+  const [playlistTitle, setPlaylistTitle] = useState();
   let [videoViewsMaxValue, setVideoViewsMaxValue] = useState(1000);
 
   async function getPlaylist(){
@@ -14,17 +16,32 @@ function App() {
     
     try {
       
+      let playlistTitle_gross = await axios.get(
+        'https://www.googleapis.com/youtube/v3/playlists', 
+        {
+          params: { 
+              'key': process.env.REACT_APP_API_KEY, 
+              'part': 'snippet',
+              'id': playlistID,
+          }
+        }
+        );
+
+        console.log(playlistTitle_gross.data.items['0'].snippet.localized.title);
+        setPlaylistTitle(playlistTitle_gross.data.items['0'].snippet.localized.title);
+
       let playlistItems = await axios.get(
         'https://www.googleapis.com/youtube/v3/playlistItems', 
         {
           params: { 
               'key': process.env.REACT_APP_API_KEY, 
               'part': 'snippet',
-              'playlistId': 'PLntvgXM11X6pi7mW0O4ZmfUI1xDSIbmTm',
+              'playlistId': playlistID,
               'maxResults': '60'
           }
         }
         );
+
 
       let ids_videos_gross = playlistItems.data['items'];
 
@@ -71,13 +88,16 @@ function App() {
   return (
     <div className="App">
       <h1>Graficos de Playlists</h1>
-      <button onClick={getPlaylist}>Botaozinho</button>
+    
+      <input className="field-playlistID" type="text" id="" onChange={(e) => setPlaylistID(e.target.value)} />
+      {console.log(playlistID)}
+      <button className="btn-playlistID"onClick={getPlaylist}>Buscar</button>
+      <h2>{playlistTitle}</h2>
       <br />
   {console.log(videoStats)}
       <br />
-      aaaaaaaaaaa
 
-      <AreaChart align="center" width={730} height={200} data={videoStats}
+      <AreaChart className="grafico" width={1000} height={300} data={videoStats}
   margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
   <defs>
     <linearGradient id="viewCount" x1="0" y1="0" x2="0" y2="1">
@@ -93,8 +113,8 @@ function App() {
   <YAxis domain={[0, dataMax => videoViewsMaxValue + 9000]} allowDataOverflow={true} />
   {/* <CartesianGrid strokeDasharray="3 3" /> */}
   <Tooltip />
-  <Area type="monotone" dataKey="viewCount" stroke="#8884d8" fillOpacity={1} fill="#21B6AB" />
-  <Area type="monotone" dataKey="likeCount" stroke="#18A558" fillOpacity={1} fill="#116530" />
+  <Area type="monotone" dataKey="viewCount" stroke="#544bfd" activeDot={{ r: 8 }} fillOpacity={.8} fill="#392FF5" />
+  <Area type="monotone" dataKey="likeCount" stroke="#3CF516" fillOpacity={.8} fill="#30A818" />
 </AreaChart>
     </div>
 
