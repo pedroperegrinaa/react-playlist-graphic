@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import api_youtube from './services/playlistitem.js';
 import qs from 'qs';
 import axios from 'axios';
-import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, Bar, Line  } from 'recharts';
+import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, Bar, Line, LineChart  } from 'recharts';
+import PlaylistThumbImage from './components/PlaylistThumbImage';
+import {getPlaylistTT, getPlaylistVideos} from './services/getPlaylist.js';
 
 function App() {
   const [videoStats, setVideoStats] = useState([]);
@@ -11,37 +13,49 @@ function App() {
   const [playlistTitle, setPlaylistTitle] = useState();
   let [videoViewsMaxValue, setVideoViewsMaxValue] = useState(1000);
 
+  let playlistThumb = '';
+
+
+  async function getPlaylistThumb(playlistID){
+
+      console.log('aaaaaaaaaaaaaaa');
+      let playlistTT_gross = await getPlaylistTT();
+      let playlistThumb = playlistTT_gross.data.items['0'].snippet.thumbnails['standard'].url;
+
+      console.log(`O link é ${playlistThumb}`);
+      return playlistThumb;
+
+  }
+
+  function processPlaylistID(){
+    console.log(playlistID);
+
+    if (playlistID.length === 34) {
+      getPlaylist();
+    } else {
+
+     if (playlistID.includes('list')) {
+       let id = playlistID.substring(playlistID.indexOf('list') + 5);
+       id = id.substring(34, 0);
+       console.log(id);
+       setPlaylistID(id);
+       getPlaylist();
+     }
+    }
+
+  }
+
   async function getPlaylist(){
     setVideoStats([]);
     
     try {
       
-      let playlistTitle_gross = await axios.get(
-        'https://www.googleapis.com/youtube/v3/playlists', 
-        {
-          params: { 
-              'key': process.env.REACT_APP_API_KEY, 
-              'part': 'snippet',
-              'id': playlistID,
-          }
-        }
-        );
+      let playlistTT_gross = await getPlaylistTT(playlistID); // TT = Title e Thumb
 
-        console.log(playlistTitle_gross.data.items['0'].snippet.localized.title);
-        setPlaylistTitle(playlistTitle_gross.data.items['0'].snippet.localized.title);
+      playlistThumb = playlistTT_gross.data.items['0'].snippet.thumbnails['standard'].url;
+      setPlaylistTitle(playlistTT_gross.data.items['0'].snippet.localized.title); 
 
-      let playlistItems = await axios.get(
-        'https://www.googleapis.com/youtube/v3/playlistItems', 
-        {
-          params: { 
-              'key': process.env.REACT_APP_API_KEY, 
-              'part': 'snippet',
-              'playlistId': playlistID,
-              'maxResults': '60'
-          }
-        }
-        );
-
+      let playlistItems = await getPlaylistVideos(playlistID);
 
       let ids_videos_gross = playlistItems.data['items'];
 
@@ -91,13 +105,12 @@ function App() {
     
       <input className="field-playlistID" type="text" id="" onChange={(e) => setPlaylistID(e.target.value)} />
       {console.log(playlistID)}
-      <button className="btn-playlistID"onClick={getPlaylist}>Buscar</button>
+      <button className="btn-playlistID"onClick={processPlaylistID}>Buscar</button>
       <h2>{playlistTitle}</h2>
-      <br />
-  {console.log(videoStats)}
+     <PlaylistThumbImage playlistID={playlistID} />
       <br />
 
-      <AreaChart className="grafico" width={1000} height={300} data={videoStats}
+      <LineChart className="grafico" width={1000} height={300} data={videoStats}
   margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
   <defs>
     <linearGradient id="viewCount" x1="0" y1="0" x2="0" y2="1">
@@ -110,12 +123,12 @@ function App() {
     </linearGradient>
   </defs>
   <XAxis />
-  <YAxis domain={[0, dataMax => videoViewsMaxValue + 9000]} allowDataOverflow={true} />
-  {/* <CartesianGrid strokeDasharray="3 3" /> */}
+  <YAxis domain={[0, dataMax => videoViewsMaxValue + videoViewsMaxValue/10]} allowDataOverflow={true} />
+  <CartesianGrid strokeDasharray="3 3" />
   <Tooltip />
-  <Area type="monotone" dataKey="viewCount" stroke="#544bfd" activeDot={{ r: 8 }} fillOpacity={.8} fill="#392FF5" />
-  <Area type="monotone" dataKey="likeCount" stroke="#3CF516" fillOpacity={.8} fill="#30A818" />
-</AreaChart>
+  <Line dataKey="viewCount" stroke="#544bfd" />
+  <Line dataKey="likeCount" stroke="#82ca9d" />
+</LineChart>
     </div>
 
     
