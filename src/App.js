@@ -107,7 +107,9 @@ function App() {
       {console.log(playlistID)}
       <button className="btn-playlistID"onClick={processPlaylistID}>Buscar</button>
       <h2>{playlistTitle}</h2>
-     <PlaylistThumbImage playlistID={playlistID} />
+     
+    <img src={() => getPlaylistThumb(playlistID)} alt="" />
+
       <br />
 
       <LineChart className="grafico" width={1000} height={300} data={videoStats}
