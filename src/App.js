@@ -12,20 +12,28 @@ function App() {
   const [playlistID, setPlaylistID] = useState();
   const [playlistTitle, setPlaylistTitle] = useState();
   let [videoViewsMaxValue, setVideoViewsMaxValue] = useState(1000);
+  let [playlistThumb, setPlaylistThumb] = useState();
+  let [playlistCountView, setPlaylistCountView] = useState();
+  let [totalViews, setTotalViews] = useState();
 
-  let playlistThumb = '';
+  function sumArray(array){
 
+    let sum = 0;
+
+    for (let i = 0; i < array.length; i++) {
+       sum = sum + array[i];
+    }
+    setTotalViews(sum.toLocaleString("pt-BR"));
+  }
 
   async function getPlaylistThumb(playlistID){
 
-      console.log('aaaaaaaaaaaaaaa');
-      let playlistTT_gross = await getPlaylistTT();
-      let playlistThumb = playlistTT_gross.data.items['0'].snippet.thumbnails['standard'].url;
+      let playlistTT_gross = await getPlaylistTT(playlistID);
+      
+      setPlaylistTitle(playlistTT_gross.data.items['0'].snippet.title);
+      setPlaylistThumb(playlistTT_gross.data.items['0'].snippet.thumbnails['standard'].url);
 
-      console.log(`O link é ${playlistThumb}`);
-      return playlistThumb;
-
-  }
+    }
 
   function processPlaylistID(){
     console.log(playlistID);
@@ -50,22 +58,20 @@ function App() {
     
     try {
       
-      let playlistTT_gross = await getPlaylistTT(playlistID); // TT = Title e Thumb
-
-      playlistThumb = playlistTT_gross.data.items['0'].snippet.thumbnails['standard'].url;
-      setPlaylistTitle(playlistTT_gross.data.items['0'].snippet.localized.title); 
+      getPlaylistThumb(playlistID);
 
       let playlistItems = await getPlaylistVideos(playlistID);
 
       let ids_videos_gross = playlistItems.data['items'];
 
       let ids_videos = [];
-
+      
       ids_videos_gross.forEach(video => {
         ids_videos.push(video.snippet.resourceId.videoId);
       })
-
+      
       console.log(ids_videos);
+      setPlaylistCountView(ids_videos.length);
 
       let videoStatsGross = [];
       let videoViewsMaxValueGross = [];
@@ -89,7 +95,9 @@ function App() {
       }
 
      videoViewsMaxValueGross = Object.keys(videoViewsMaxValueGross).map(i => JSON.parse(videoViewsMaxValueGross[Number(i)]));
-
+      
+     console.log(videoViewsMaxValueGross);
+     sumArray(videoViewsMaxValueGross);
      setVideoViewsMaxValue(Math.max.apply(Math, videoViewsMaxValueGross));
       setVideoStats(videoStatsGross);
   
@@ -106,9 +114,11 @@ function App() {
       <input className="field-playlistID" type="text" id="" onChange={(e) => setPlaylistID(e.target.value)} />
       {console.log(playlistID)}
       <button className="btn-playlistID"onClick={processPlaylistID}>Buscar</button>
+
       <h2>{playlistTitle}</h2>
-     
-    <img src={() => getPlaylistThumb(playlistID)} alt="" />
+      <img src={playlistThumb} alt="icons" className="crop" />
+      <p>Total de videos: {playlistCountView}</p>
+      <p>Total de views: {totalViews}</p>
 
       <br />
 

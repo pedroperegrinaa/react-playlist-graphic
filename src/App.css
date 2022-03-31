@@ -69,3 +69,9 @@
   width: 300px;
   height: 300px;
 }
+
+.crop {
+  width: 200px;
+  height: 150px;
+  overflow: hidden;
+}
