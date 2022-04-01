@@ -116,10 +116,14 @@ function App() {
       <button className="btn-playlistID"onClick={processPlaylistID}>Buscar</button>
 
       <h2>{playlistTitle}</h2>
+      <div className="playlistinfo">
       <img src={playlistThumb} alt="icons" className="crop" />
+      <div className="playlistdata">
       <p>Total de videos: {playlistCountView}</p>
       <p>Total de views: {totalViews}</p>
-
+      </div>
+      </div>
+      
       <br />
 
       <LineChart className="grafico" width={1000} height={300} data={videoStats}
