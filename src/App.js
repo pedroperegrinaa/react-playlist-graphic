@@ -1,11 +1,10 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import api_youtube from './services/playlistitem.js';
-import qs from 'qs';
 import axios from 'axios';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, Bar, Line, LineChart  } from 'recharts';
 import PlaylistThumbImage from './components/PlaylistThumbImage';
 import {getPlaylistTT, getPlaylistVideos} from './services/getPlaylist.js';
+import info from './images/info.png'
 
 function App() {
   const [videoStats, setVideoStats] = useState([]);
@@ -109,42 +108,66 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Graficos de Playlists</h1>
+     <div className="site">
+     <h1 className="site-title">Análise de Playlists</h1>
     
-      <input className="field-playlistID" type="text" id="" onChange={(e) => setPlaylistID(e.target.value)} />
-      {console.log(playlistID)}
-      <button className="btn-playlistID"onClick={processPlaylistID}>Buscar</button>
+    <input className="field-playlistID" type="text" id="" onChange={(e) => setPlaylistID(e.target.value)} />
+    {console.log(playlistID)}
+    <button className="btn-playlistID"onClick={processPlaylistID}>Buscar</button>
+    
+    <br />
 
-      <h2>{playlistTitle}</h2>
-      <div className="playlistinfo">
-      <img src={playlistThumb} alt="icons" className="crop" />
-      <div className="playlistdata">
-      <p>Total de videos: {playlistCountView}</p>
-      <p>Total de views: {totalViews}</p>
-      </div>
-      </div>
-      
-      <br />
+    <div className="como-usar">
+    <img src={info} alt=""/>
+    <p>
+    Insira no campo acima a URL de algum video da playlist <br /> que você deseja para que o site identifique :)
+    </p>
+    </div>
 
-      <LineChart className="grafico" width={1000} height={300} data={videoStats}
-  margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
-  <defs>
-    <linearGradient id="viewCount" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-      <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-    </linearGradient>
-    <linearGradient id="likeCount" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-      <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
-    </linearGradient>
-  </defs>
-  <XAxis />
-  <YAxis domain={[0, dataMax => videoViewsMaxValue + videoViewsMaxValue/10]} allowDataOverflow={true} />
-  <CartesianGrid strokeDasharray="3 3" />
-  <Tooltip />
-  <Line dataKey="viewCount" stroke="#544bfd" />
-  <Line dataKey="likeCount" stroke="#82ca9d" />
+    <hr />
+
+    <div className="dashboard">
+
+    <div className="card card-thumb">
+    <img src={playlistThumb} alt="icons" className="crop" />
+    <p>{playlistTitle}</p>
+    </div>
+
+    <div className="card card-views">
+    <div className="totais">
+    <p>Total de  <br /> videos: </p>
+    <span>{playlistCountView}</span>
+    <hr />
+    </div>
+    <div className="totais">
+    <p>Total de <br /> views: </p>
+    <span>{totalViews}</span>
+    </div>
+    </div>
+    
+    <br />
+
+    <LineChart className="grafico" width={1000} height={600} data={videoStats}
+margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
+<defs>
+  <linearGradient id="viewCount" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+    <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+  </linearGradient>
+  <linearGradient id="likeCount" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+  </linearGradient>
+</defs>
+<XAxis />
+<YAxis domain={[0, dataMax => videoViewsMaxValue + videoViewsMaxValue/10]} allowDataOverflow={true} />
+<CartesianGrid strokeDasharray="3 3" />
+<Tooltip />
+<Line dataKey="viewCount" stroke="#544bfd" />
+<Line dataKey="likeCount" stroke="#82ca9d" />
 </LineChart>
+    </div>
+     </div>
     </div>
 
     

@@ -13,6 +13,11 @@
   }
 }
 
+html, body {
+  margin: 0px;
+  background-color: #161616;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -37,14 +42,27 @@
   }
 }
 
+.site {
+  height: 100vh;
+  color: #E4E4E4;
+}
+
+.site-title {
+  margin-top:0px;
+  padding-top: 50px;
+  font-size: 40px;
+}
+
 .field-playlistID {
   font-size:18px;
   margin-left:10px;
-  /* background-color: #FFF; */
-  border: 2px solid #392FF5;
-  padding: 10px 20px;
+  background-color: #161616;
+  border: 3px solid #392FF5;
   border-radius:10px;
+  padding: 10px 20px;
   width: 400px;
+  color: #E4E4E4;
+/* border-image-source: #132ce7; */
 
 }
 
@@ -52,7 +70,7 @@
   font-size:18px;
   margin-left:10px;
   background-color: #392FF5;
-  border: 2px solid #392FF5;
+  border: 3px solid #392FF5;
   padding: 10px 20px;
   color: #fff;
   border-radius:10px;
@@ -76,14 +94,55 @@
   overflow: hidden;
 }
 
-.playlistinfo {
-  margin: 0px 300px;
+.como-usar {
   display: flex;
+  align-items:center;
+  margin: 20px auto;
+  justify-content: center;
+  color: #636363;
 }
 
-/* .playlistdata{
+.como-usar img {
+  margin-right: 20px;
+}
+
+hr {
+  border: 2px solid #1D1D1D;
+  color: #1D1D1D;
+}
+
+.card {
+  background-color: #222222;
+  border-radius:16px;
+}
+
+.card-thumb {
+  width:480px;
+  height:330px;
+}
+
+.card-views {
+  grid-row-start: 1;
+  grid-row-start: 2;
+  width:480px;
+  height:220px;
+}
+
+
+.totais {
   display: flex;
-  flex-direction: column;
-  align-items: start;
-  margin-left: 20px;
-} */
+  align-items: center;
+}
+
+.dashboard {
+  display:grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grafico {
+  grid-row-start:1;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
