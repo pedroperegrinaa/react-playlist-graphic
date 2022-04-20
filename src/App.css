@@ -16,6 +16,7 @@
 html, body {
   margin: 0px;
   background-color: #161616;
+  font-family: 'Public Sans', sans-serif;
 }
 
 .App-header {
@@ -89,9 +90,13 @@ html, body {
 }
 
 .crop {
-  width: 200px;
-  height: 150px;
-  overflow: hidden;
+  width: 360px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  position: relative;
+  top: 30px;
+
 }
 
 .como-usar {
@@ -118,26 +123,53 @@ hr {
 
 .card-thumb {
   width:480px;
-  height:330px;
+  height:300px;
 }
+
+.card-thumb p {
+  font-size: 16pt;
+  font-size: 700;
+  position: relative;
+  top: 25px;
+}
+
 
 .card-views {
   grid-row-start: 1;
   grid-row-start: 2;
   width:480px;
-  height:220px;
+  height:180px;
+  padding: 15px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 
 .totais {
+  padding-left: 30px;
   display: flex;
   align-items: center;
+  font-weight: 600;
+
+}
+
+.totais span {
+  font-size: 40pt;
+  font-weight: 700;
+  margin: 0px auto;
+  background: -webkit-linear-gradient(137deg, rgba(255,0,0,1) 0%, rgba(157,0,171,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .dashboard {
   display:grid;
   gap: 10px;
   grid-template-columns: repeat(2, 1fr);
+  justify-items: end;
+
+  margin-top:30px;
 }
 
 .grafico {
@@ -145,4 +177,6 @@ hr {
   grid-row-end: 3;
   grid-column-start: 2;
   grid-column-end: 3;
+  text-align: left;
+  border: 5px solid #000;
 }

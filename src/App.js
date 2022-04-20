@@ -137,8 +137,8 @@ function App() {
     <div className="totais">
     <p>Total de  <br /> videos: </p>
     <span>{playlistCountView}</span>
-    <hr />
     </div>
+    <hr />
     <div className="totais">
     <p>Total de <br /> views: </p>
     <span>{totalViews}</span>
@@ -147,18 +147,7 @@ function App() {
     
     <br />
 
-    <LineChart className="grafico" width={1000} height={600} data={videoStats}
-margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
-<defs>
-  <linearGradient id="viewCount" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-    <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-  </linearGradient>
-  <linearGradient id="likeCount" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
-  </linearGradient>
-</defs>
+    <LineChart className="grafico" width={800} height={500} data={videoStats} margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
 <XAxis />
 <YAxis domain={[0, dataMax => videoViewsMaxValue + videoViewsMaxValue/10]} allowDataOverflow={true} />
 <CartesianGrid strokeDasharray="3 3" />
